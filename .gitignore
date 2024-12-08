@@ -1,0 +1,7 @@
+/.venv
+/yaml
+/fork
+/output
+/*.csv
+/*.ods
+/*.pickle
