@@ -9,10 +9,6 @@ import ezodf
 
 import ods_columns as cols
 
-fastLoad = True
-
-inverse = False
-
 
 # C O L L O C A T I O N S
 

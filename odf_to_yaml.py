@@ -15,7 +15,7 @@ from oewn_core.wordnet_toyaml import save
 import ods_columns as cols
 from oewn_core.wordnet import WordnetModel
 
-fastLoad = True
+pickle = None # 'oewn.pickle'
 
 inverse = True
 
@@ -101,7 +101,8 @@ def process_sense(sense, collocations, sensekeys):
                 fails += 1
                 continue
             # type
-            t = Sense.Relation.Type.COLLOCATION if direction == TARGET else Sense.Relation.Type.COLLOCATION_INV
+            t = Sense.Relation.Type.COLLOCATION
+            # t = Sense.Relation.Type.COLLOCATION if direction == TARGET else Sense.Relation.Type.COLLOCATION_INV
 
             # add
             if sense.relations is None:
@@ -135,10 +136,12 @@ def run():
     print(f"making collocations from {args.ods}", file=sys.stderr)
     with ods_collocations(args.ods) as collocations:
         print(f"made collocations from {args.ods} {len(list(generate_collocated(collocations)))}", file=sys.stderr)
+
         # run
-        src = 'pickle' if fastLoad else f'{args.repo}'
+        fast_load = pickle is not None
+        src = 'pickle' if fast_load else f'{args.repo}'
         print(f"loading from {src}", file=sys.stderr)
-        wn = load_pickle('.', 'oewn.pickle') if fastLoad else load(args.repo, extend=False)
+        wn = load_pickle('.', file=f'{args.repo}.pickle') if fast_load else load(args.repo, extend=False)
         print(f"loaded from {args.repo}", file=sys.stderr)
         # process
         print(f"processing", file=sys.stderr)

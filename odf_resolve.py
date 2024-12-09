@@ -12,7 +12,7 @@ from oewn_core.wordnet_fromyaml import load
 
 import ods_columns as cols
 
-fastLoad = True
+pickle = None # 'oewn.pickle'
 
 inverse = False
 
@@ -72,8 +72,10 @@ def run():
         print(f"made collocations from {args.ods} {len(list(collocations))}", file=sys.stderr)
 
         # run
-        print(f"loading from {'pickle' if fastLoad else {args.repo} }", file=sys.stderr)
-        wn = load_pickle('.', 'oewn.pickle') if fastLoad else load(args.repo, extend=False)
+        fast_load = pickle is not None
+        src = 'pickle' if fast_load else f'{args.repo}'
+        print(f"loading from {src}", file=sys.stderr)
+        wn = load_pickle('.', file=f'{args.repo}.pickle') if fast_load else load(args.repo, extend=False)
         print(f"loaded from {args.repo}", file=sys.stderr)
 
         sensekeys = make_sensekeys(wn)
